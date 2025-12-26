@@ -1,7 +1,12 @@
 /**
  * @type {import('next').NextConfig}
  */
+
+// const isProd = process.env.NODE_ENV === 'production'
+// const repoName = "personal-blog-deploy"
+
 const nextConfig = {
+//   basePath: isProd ? `/${repoName}` : '',
   output: 'export',
   images: {
     unoptimized: true
