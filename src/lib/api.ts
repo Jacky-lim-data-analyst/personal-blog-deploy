@@ -46,13 +46,15 @@ function transformImagePaths(content: string): string {
   // Transform markdown image syntax: ![alt](/path/to/image.jpg) or ![alt](path/to/image.jpg)
   content = content.replace(/!\[([^\]]*)\]\((?!http)([^)]+)\)/g, (match, alt, path) => {
     // Only add basePath if the path doesn't already have it and isn't an external URL
-    const newPath = path.startsWith('/') ? `${basePath}${path}` : `${basePath}/${path}`;
+    const trimmedPath = path.trim();
+    const newPath = trimmedPath.startsWith('/') ? basePath + trimmedPath : basePath + '/' + trimmedPath;
     return `![${alt}](${newPath})`;
   });
 
   // Transform HTML img tags: <img src="/path/to/image.jpg" /> or <img src="path/to/image.jpg" />
   content = content.replace(/<img\s+([^>]*?)src=["'](?!http)([^"']+)["']([^>]*?)>/gi, (match, before, src, after) => {
-    const newSrc = src.startsWith('/') ? `${basePath}${src}` : `${basePath}/${src}`;
+    const trimmedSrc = src.trim();
+    const newSrc = trimmedSrc.startsWith('/') ? basePath + trimmedSrc : basePath + '/' + trimmedSrc;
     return `<img ${before}src="${newSrc}"${after}>`;
   });
 
