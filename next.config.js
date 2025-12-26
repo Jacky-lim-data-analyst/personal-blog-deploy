@@ -12,9 +12,9 @@ const nextConfig = {
     unoptimized: true
   },
  
-  env: {
-    NEXT_PUBLIC_BASE_PATH: isProd ? `/${repoName}` : '',
-  },
+//   env: {
+//     NEXT_PUBLIC_BASE_PATH: isProd ? `/${repoName}` : '',
+//   },
   // Optional: Change links `/me` -> `/me/` and emit `/me.html` -> `/me/index.html`
   // trailingSlash: true,
  
