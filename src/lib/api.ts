@@ -4,9 +4,12 @@ import matter from "gray-matter";
 import { join } from "path";
 
 // Get the base path from environment or config
-const isProd = process.env.NODE_ENV === 'production';
-const repoName = "personal-blog-deploy";
-const basePath = isProd ? `/${repoName}` : '';
+// const isProd = process.env.NODE_ENV === 'production';
+// const repoName = "personal-blog-deploy";
+// const basePath = isProd ? `/${repoName}` : '';
+
+// Get the base path from Next.js environment variable
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 const postsDirectory = join(process.cwd(), "_posts");
 
@@ -39,7 +42,7 @@ export function getAllPosts(): Post[] {
 
 function transformImagePaths(content: string): string {
   // Only transform in production
-  if (!isProd) {
+  if (!basePath) {
     return content;
   }
 
