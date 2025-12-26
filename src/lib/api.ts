@@ -13,10 +13,13 @@ export function getPostSlugs() {
   return fs.readdirSync(postsDirectory);
 }
 
+// slug: markdown file names
+// fetches and parses the content of single blog post given its slugs
 export function getPostBySlug(slug: string) {
   const realSlug = slug.replace(/\.md$/, "");
   const fullPath = join(postsDirectory, `${realSlug}.md`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
+  // data: front matter, content: markdown body
   const { data, content } = matter(fileContents);
 
   // Replace ${basePath} placeholder with actual basePath
@@ -39,6 +42,7 @@ export function getPostBySlug(slug: string) {
   // return { ...data, slug: realSlug, content } as Post;
 }
 
+// retrives all blog posts, sorted by date
 export function getAllPosts(): Post[] {
   const slugs = getPostSlugs();
   const posts = slugs
@@ -48,26 +52,3 @@ export function getAllPosts(): Post[] {
   return posts;
 }
 
-// function transformImagePaths(content: string): string {
-//   // Only transform in production
-//   if (!basePath) {
-//     return content;
-//   }
-
-//   // Transform markdown image syntax: ![alt](/path/to/image.jpg) or ![alt](path/to/image.jpg)
-//   content = content.replace(/!\[([^\]]*)\]\((?!http)([^)]+)\)/g, (match, alt, path) => {
-//     // Only add basePath if the path doesn't already have it and isn't an external URL
-//     const trimmedPath = path.trim();
-//     const newPath = trimmedPath.startsWith('/') ? basePath + trimmedPath : basePath + '/' + trimmedPath;
-//     return `![${alt}](${newPath})`;
-//   });
-
-//   // Transform HTML img tags: <img src="/path/to/image.jpg" /> or <img src="path/to/image.jpg" />
-//   content = content.replace(/<img\s+([^>]*?)src=["'](?!http)([^"']+)["']([^>]*?)>/gi, (match, before, src, after) => {
-//     const trimmedSrc = src.trim();
-//     const newSrc = trimmedSrc.startsWith('/') ? basePath + trimmedSrc : basePath + '/' + trimmedSrc;
-//     return `<img ${before}src="${newSrc}"${after}>`;
-//   });
-
-//   return content;
-// }
