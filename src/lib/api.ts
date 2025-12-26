@@ -3,7 +3,10 @@ import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
 
-const config = require("../../next.config");
+// Determine basePath based on environment
+const isProd = process.env.NODE_ENV === 'production';
+const basePath = isProd ? '/personal-blog-deploy' : '';
+
 const postsDirectory = join(process.cwd(), "_posts");
 
 export function getPostSlugs() {
@@ -16,10 +19,22 @@ export function getPostBySlug(slug: string) {
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
-  // 
-  const contentStr = content.replaceAll(/\$\{basePath\}/gi, config.basePath);
+  // Replace ${basePath} placeholder with actual basePath
+  const contentStr = content.replace(/\$\{basePath\}/g, basePath);
+  
+  // Also replace basePath in frontmatter fields
+  const processedData = { ...data };
+  if (processedData.coverImage) {
+    processedData.coverImage = processedData.coverImage.replace(/\$\{basePath\}/g, basePath);
+  }
+  if (processedData.ogImage?.url) {
+    processedData.ogImage.url = processedData.ogImage.url.replace(/\$\{basePath\}/g, basePath);
+  }
+  if (processedData.author?.picture) {
+    processedData.author.picture = processedData.author.picture.replace(/\$\{basePath\}/g, basePath);
+  }
 
-  return { ...data, slug: realSlug, content: contentStr } as Post;
+  return { ...processedData, slug: realSlug, content: contentStr } as Post;
 
   // return { ...data, slug: realSlug, content } as Post;
 }
