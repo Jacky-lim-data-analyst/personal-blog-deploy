@@ -1,5 +1,5 @@
 import Container from "@/app/_components/container";
-import { EXAMPLE_PATH } from "@/lib/constants";
+import { EMAIL_ADDRESS } from "@/lib/constants";
 // import { siGithub, siMedium } from 'simple-icons';
 import { Mail, Terminal } from "lucide-react";
 import { FaLinkedin, FaGithub, FaMedium } from "react-icons/fa6";
@@ -49,6 +49,9 @@ export function Footer() {
             </a>
             <a href="https://medium.com/@jq0112358" className="hover:text-blue-400 transition-colors">
               <FaMedium className="w-5 h-5" />
+            </a>
+            <a href={`mailto:${EMAIL_ADDRESS}`} className="hover:text-blue-400 transition-colors">
+              <Mail className="w-5 h-5" />
             </a>
           </div>
 
